@@ -198,7 +198,7 @@ def main() -> None:
     special_cords = {'double': None, 'tripple': None, 'multiplayer': None}
     fill_coordinates_dict(special_cords)
     
-
+    
     #valid_coordinate_list = find_valid_word_coordinates()
     list_of_words = open_and_format_the_word_list('wordlist.txt')
     list_of_valid_words_as_coordinates = find_valid_word_coordinates(list_of_words, letter_matrix)

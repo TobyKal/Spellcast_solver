@@ -1,12 +1,6 @@
 import numpy as np
 import math
 
-
-
-
-
-
-
 def sting_to_matrix(matrix_stirng: str) -> np.ndarray:
     matrix_stirng = matrix_stirng.upper()
     matrix_stirng = list(matrix_stirng)
@@ -22,19 +16,8 @@ def sting_to_matrix(matrix_stirng: str) -> np.ndarray:
 
 
 def matirx_form_screenshot() -> np.ndarray:
-    matrix = None
-
-    return matrix
-
-
-
-
-
-
-
-
-
-
+    '''Futrure feature'''
+    pass
 
 
 def get_matrix(stirng= False) -> np.ndarray:
@@ -42,7 +25,7 @@ def get_matrix(stirng= False) -> np.ndarray:
         try:
             matrix = sting_to_matrix(stirng)
         except:
-            print("You gave a wrong matrix_string you dumb ass!!! Try again. \n\n\n")
+            print("You gave a wrong matrix_string you dumb ass!!! Try again. \n\n")
             get_matrix
         
         return matrix

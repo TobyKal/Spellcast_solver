@@ -1,6 +1,9 @@
 import game_matrix
 import numpy as np
 
+
+
+
 def find_valid_word_coordinates(list_of_words: list[str], matrix: np.ndarray) -> list:
     '''
         This function is looking for valid words that can be in the matrix.
@@ -86,6 +89,8 @@ def find_valid_word_coordinates(list_of_words: list[str], matrix: np.ndarray) ->
             find_combinations(matrix, [(row,col)], list_of_words)
 
     return valid_coordinates_list
+
+
 def open_and_format_the_word_list(word_list_name: str) -> list[str]:
     with open(f'{word_list_name}', 'r') as file:
         wordlist = file.readlines()
@@ -95,6 +100,8 @@ def open_and_format_the_word_list(word_list_name: str) -> list[str]:
         wordlist[i] = word.rstrip('\n')
 
     return wordlist
+
+
 def coordinates_to_string(coordinates: list[tuple[int,int]], matrix: np.ndarray) -> str:
         '''
         Converst a list of coordinates into a sing using a given matrix.
@@ -104,7 +111,10 @@ def coordinates_to_string(coordinates: list[tuple[int,int]], matrix: np.ndarray)
             matirx -> np.array - np.array wiht letter representing the gameboard
         '''     
         return ''.join(matrix[cord[0],cord[1]] for cord in coordinates)
-def create_socring_leaderboard(list_of_words_to_score: list[str], matrix: np.ndarray, special_cords: list[(int, int)]) -> list[(int, str)]:
+
+def create_socring_leaderboard(list_of_words_to_score: list[str],
+                               matrix: np.ndarray,
+                               special_cords: dict[str, int] = [None, None, None]) -> list[(int, str)]:
     '''
     This funcion creates a sorted list of words with coresponding points in a tuople
     '''
@@ -138,11 +148,11 @@ def create_socring_leaderboard(list_of_words_to_score: list[str], matrix: np.nda
             elif letter_cords == special_cords['double']:
                 word_score += letter_scores[f'{letter}'] * 2
 
-            elif letter_cords == special_cords['tripple'] and letter_cords == special_cords['multiplayer']:
+            elif letter_cords == special_cords['triple'] and letter_cords == special_cords['multiplayer']:
                 word_score += letter_scores[f'{letter}'] * 3
                 word_multiplayer_found = True
 
-            elif letter_cords == special_cords['tripple']:
+            elif letter_cords == special_cords['triple']:
                 word_score += letter_scores[f'{letter}'] * 3
             
             elif letter_cords == special_cords['multiplayer']  :
@@ -160,11 +170,17 @@ def create_socring_leaderboard(list_of_words_to_score: list[str], matrix: np.nda
 
     scores.sort(reverse=True)
     return scores 
+
+def str_to_cords_tuple(str: str) -> tuple:
+    if len(str) != 2:
+        return None
+    else:
+        return (int(str[0]), int(str[1]))
+
 def fill_coordinates_dict(dictionary: dict) -> None:
     '''
     This funcion iterates over an object in and allows to fill in the coordinates to the dict
     '''
-
 
     def fill_in_the_object_in_dict(object_in_dic:str, dictionary: dict) -> tuple:
         cords = list(input(f'provide cords for {obj} (indexing starts at 1, only two ints no spaces, if None type "n"!!)'))
@@ -181,36 +197,23 @@ def fill_coordinates_dict(dictionary: dict) -> None:
     for obj in dictionary:
         dictionary[f'{obj}'] = fill_in_the_object_in_dict(obj, dictionary)
 
-alphabet = [
-    'A', 'B', 'C', 'D', 'E', 'F',
-    'G', 'H', 'I', 'J', 'K', 'L',
-    'M', 'N', 'O', 'P', 'Q', 'R',
-    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-]
 
 
 
-def main() -> None:
+def find_socred_valid_word_list(letter_matrix: str,
+                                list_of_valid_words: list[str],
+                                special_cords: list[list[ (int,int) ]])-> list[(int, str)] :
     
-    string_matrix = input('provide the matrix in form of a sting (no spaces, no nothin\')')
-    letter_matrix = game_matrix.get_matrix(string_matrix)
-   
-    special_cords = {'double': None, 'tripple': None, 'multiplayer': None}
-    fill_coordinates_dict(special_cords)
-    
-    
-    #valid_coordinate_list = find_valid_word_coordinates()
-    list_of_words = open_and_format_the_word_list('wordlist.txt')
-    list_of_valid_words_as_coordinates = find_valid_word_coordinates(list_of_words, letter_matrix)
-    found_words_scores = create_socring_leaderboard(list_of_valid_words_as_coordinates, letter_matrix, special_cords)
-    
-
-    print(letter_matrix)
-    for word in found_words_scores:
-        if len(word[1]) >= 6 or word[0] > 30:
-            print(f'Points {word[0]}  {word[1]}')
-
-main()
+    return create_socring_leaderboard(find_valid_word_coordinates(list_of_valid_words, letter_matrix), letter_matrix, special_cords)
 
 
+
+
+def formated_words_form_sting_response(sting_matrix: str = 'disndlfhayeiowsxcnvbxjrds',special_cords = {'double': None, 'tripple': None, 'multiplayer': None}, word_list_name: str = "wordlist.txt") -> str:
+    letter_matrix = game_matrix.get_matrix(sting_matrix)
+    found_scored_words = find_socred_valid_word_list(letter_matrix, open_and_format_the_word_list(f'{word_list_name}'), special_cords)
+    template=f""
+    for i in range(5):
+        template += f"""{letter_matrix[i, 0]:3}{letter_matrix[i, 1]:3}{letter_matrix[i, 2]:3}{letter_matrix[i, 3]:3}{letter_matrix[i, 4]:3} {found_scored_words[i][0]} {found_scored_words[i][1]}\n"""    
+    return template
 

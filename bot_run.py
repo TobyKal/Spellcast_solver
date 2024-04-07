@@ -3,14 +3,8 @@
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-import modules as mod
+import modules as m
 import os
-
-
-
-
-
-
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -30,18 +24,9 @@ async def info(ctx):
 
 
 @bot.command()
-async def find(ctx, matrix_string: str, multiplier: tuple = None, double_letter: tuple = None, triple_letter: tuple = None ):
-    special_cords = {"double": double_letter, "triple": triple_letter, "multiplier": multiplier,}
-    if multiplier != None:
-        special_cords["multiplier"] = mod.str_to_cords_tuple(multiplier)
-    if double_letter != None:
-        special_cords["double"] = mod.str_to_cords_tuple(double_letter)
-    if triple_letter != None:
-            special_cords["triple"] = mod.str_to_cords_tuple(triple_letter)
-
-
+async def find(ctx, matrix_string: str):
     try:
-        response = mod.formatted_words_from_string_response(matrix_string, special_cords)
+        response = m.bot_formatted_leaderboard(matrix_string)
     except:
         response = "Something went wrong try again. Make sure values are correct"
     await ctx.send(f"{response}")

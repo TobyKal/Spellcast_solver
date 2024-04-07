@@ -1,12 +1,12 @@
-import modules as mod
-
+import modules as m
+import word_finder
 
 def main() -> str:
     string_matrix = 'hdcbasuedfodsckfurdskcbsq'
-    special_cords = {'double': (4,4), 'triple': (4,4), 'multiplier': (4,4)}
     
-    print(mod.formatted_words_from_string_response(string_matrix, special_cords))
+    print(m.bot_formatted_leaderboard(string_matrix))
+    print("\n")
+    print(word_finder.find_words_form_string_matrix(string_matrix))
 
-    
 if __name__ == "__main__":
     main()
